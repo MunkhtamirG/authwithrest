@@ -3,12 +3,14 @@ import 'package:authwithrest/bloc/login_bloc/login_bloc.dart';
 import 'package:authwithrest/repositories/repositories.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'login_form.dart';
 
 class LoginScreen extends StatelessWidget {
-  final UserRepositories userRepositories;
+  final UserRepositories userRepository;
 
-  const LoginScreen({super.key, required this.userRepositories})
-      : assert(userRepositories != null);
+  LoginScreen({Key? key, required this.userRepository})
+      : assert(userRepository != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +18,13 @@ class LoginScreen extends StatelessWidget {
       body: BlocProvider(
         create: (context) {
           return LoginBloc(
-              userRepositories, BlocProvider.of<AuthenticationBloc>(context));
+            authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+            userRepository: userRepository,
+          );
         },
+        child: LoginForm(
+          userRepository: userRepository,
+        ),
       ),
     );
   }
